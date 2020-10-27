@@ -1,0 +1,14 @@
+CREATE TABLE public.student
+(
+    student_name "char" NOT NULL,
+    student_id numeric(9)[] NOT NULL,
+    cv xml,
+    email "char" NOT NULL,
+    PRIMARY KEY (student_id)
+)
+WITH (
+    OIDS = FALSE
+);
+
+ALTER TABLE public.student
+    OWNER to postgres;

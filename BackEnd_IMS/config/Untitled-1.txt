@@ -1,0 +1,335 @@
+
+
+
+//tabels creating *******************************
+app.post('/document', function (req, res, next) {
+    client.query(tabels.document, function (err, result) {  
+        console.log("query vacancies");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+});
+app.post('/report', function (req, res, next) {
+    client.query(tabels.report, function (err, result) {  
+        console.log("query vacancies");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200,console.log("query performed"))
+    })
+});
+
+app.post('/student', function (req, res, next) {
+    client.query(tabels.student, function (err, result) {  
+        console.log("query vacancies");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200,console.log("query performed"))
+    })
+});
+
+app.post('/vacancies', function (req, res, next) {
+    client.query(tabels.vacancies, function (err, result) {  
+        console.log("query vacancies");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+});
+
+app.post('/trainingCommittee', function (req, res, next) {
+    client.query(tabels.trainingCommittee, function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+});
+
+app.post('/organization', function (req, res, next) {
+    client.query(tabels.organization, function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(result.rows)
+    })
+});
+
+app.post('/supervisor', function (req, res, next) {
+    client.query(tabels.supervisor, function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.status(200,"table created")
+    })
+});
+//tabels creating *******************************
+
+
+
+//supervisors posting ######################################################
+app.post('/postSupervisors', function (req, res, next) {
+    for(i in supervisors){
+    client.query("INSERT INTO supervisor(id ,name,email) values($1, $2,$3);",supervisors[i], function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+}
+});
+
+app.post('/postSupervisorOmran', function (req, res, next) {
+    client.query(supervisors.omran,supervisors.omranData, function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+});
+
+//supervisors posting ######################################################
+
+//organizations posting ####################################################
+
+
+const orgs =(i)=>{
+     
+    for(i in organizationss){
+
+       console.log(organizationss[i])
+
+   }
+   return organizationss[i]
+}
+
+
+app.post('/orgs', function (req, res, next) {
+    client.query("INSERT INTO organization(id ,name,email,information) values($1, $2,$3,$4);",orgs(), function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+});
+
+
+
+
+
+
+
+
+
+
+
+
+app.post('/elmPosting', function (req, res, next) {
+    client.query(organizations.elm,organizations.elmData, function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+});
+
+app.post('/stcPosting', function (req, res, next) { 
+    client.query(organizations.stc,organizations.stcData, function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+});
+
+//organizations posting ####################################################
+
+
+//vacancies posting ########################################################
+
+
+
+   
+        app.post('/vacanciesPost', function (req, res, next) {
+            let i = 0
+            for(i ;i< vacancies.length; i++){
+                console.log(vacancies[i])
+            client.query("INSERT INTO vacancies(id ,job_title,job_description,organization_id) values($1, $2,$3,$4);",vacancies[i], function (err, result) {  
+                console.log("query");
+          
+                if (err) {
+                    console.log(err);
+                    res.status(400).send(err);
+                }
+                res.json(200)
+            })
+        }
+        });
+
+
+
+        app.post('/vacanciespos', function (req, res, next) {
+            
+            client.query("INSERT INTO vacancies(id ,job_title,job_description,organization_id) values($1, $2,$3,$4);",vacancies[3], function (err, result) {  
+                console.log("query");
+          
+                if (err) {
+                    console.log(err);
+                    res.status(400).send(err);
+                }
+                res.json(200)
+            })
+        
+        });
+
+   
+   
+
+
+
+ 
+app.get('/getElmJobs', function (req, res, next) {
+
+    client.query( 'SELECT job_title FROM vacancies , organization  WHERE organization.id=organization_id AND organization.name=$1',["elm"],function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.rows);
+            
+        }
+        res.json(result.rows) 
+    });
+});
+
+
+
+
+app.post('/studentsPost', function (req, res, next) {
+    for(i in student){
+    client.query("INSERT INTO student(id , name  ,supervisor_id ,organization_id,email  , vacancy_id  , gpa ) values ($1, $2,$3,$4,$5,$6,$7)" ,student[i], function (err, result) {  
+        console.log("query");
+  
+        if (err) {
+            console.log(err);
+            res.status(400).send(err);
+        }
+        res.json(200)
+    })
+}
+});
+
+
+app.get('/getStudent', function (req, res, next) {
+
+    client.query( 'SELECT * FROM student',function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.rows);
+            
+        }
+        res.json(result.rows) 
+    });
+});
+
+
+
+app.get('/getOrganization', function (req, res, next) {
+
+    client.query( 'SELECT * FROM organization',function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.rows);
+            
+        }
+        res.json(result.rows) 
+    });
+});
+
+
+app.get('/getSupervisor', function (req, res, next) {
+
+    client.query( 'SELECT * FROM supervisor',function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.rows);
+            
+        }
+        res.json(result.rows) 
+    });
+});
+
+app.patch('/patch', function (req, res, next) {
+
+    client.query( 'ALTER TABLE student ALTER COLUMN gpa TYPE NUMERIC USING gpa::INT::NUMERIC',function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.rows);
+            
+        }
+        res.json(result) 
+    });
+});
+
+app.get('/getVacancies', function (req, res, next) {
+
+    client.query( 'SELECT * FROM vacancies',function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.rows);
+            
+        }
+        res.json(result.rows) 
+    });
+});
+
+const queryDelete = {
+    // give the query a unique name
+    name: '6565',
+    text: 'DROP  FROM students WHERE student_id = $1',
+    values: [1],
+  }
+app.delete('/delete', function (req, res, next) {
+
+    client.query( queryDelete,function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(400).send(err.rows);
+        }
+        res.status(200)
+    });
+});
